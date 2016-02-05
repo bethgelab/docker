@@ -59,8 +59,8 @@ git-all:
 # - required: image, file
 # - optional: tag
 vim-image:
-	vim $(image)/$(tag)/$(file)
-	make sync-file image=$(image) file=$(file) tag=$(tag)
+	vim docker-$(image)/$(tag)/$(file)
+	make sync-file image=docker-$(image) file=$(file) tag=$(tag)
 
 # opens Dockerfile in vim, syncs across tags and sets correct base image
 #
@@ -68,9 +68,9 @@ vim-image:
 # - required: image, baseimage
 # - optional: tag
 docker-image:
-	vim $(image)/$(tag)/Dockerfile
-	make sync-file image=$(image) file=Dockerfile tag=$(tag)
-	make setbase-dockerfile image=$(image) baseimage=$(baseimage)
+	vim docker-$(image)/$(tag)/Dockerfile
+	make sync-file image=docker-$(image) file=Dockerfile tag=$(tag)
+	make setbase-dockerfile image=docker-$(image) baseimage=docker-$(baseimage)
 
 # sync a file from tag directory to all other tags
 #
