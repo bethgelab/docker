@@ -112,9 +112,9 @@ build-deeplearning:
 #
 # parameters:
 # - optional: tag
+.PHONY: docker-xserver
 docker-xserver:
-	make vim-image image=xserver file=Dockerfile
-	python utils/set_ldap_baseimages.py '$(alltags)' '$(ldapbaseimages)'
+	echo currently not supported
 docker-notebook:
 	make docker-image image=jupyter-notebook baseimage=xserver tag=$(tag)
 docker-scipyserver:
