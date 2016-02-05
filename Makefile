@@ -60,7 +60,7 @@ git-all:
 # - optional: tag
 vim-image:
 	vim docker-$(image)/$(tag)/$(file)
-	make sync-file image=docker-$(image) file=$(file) tag=$(tag)
+	make sync-file image=$(image) file=$(file) tag=$(tag)
 
 # opens Dockerfile in vim, syncs across tags and sets correct base image
 #
@@ -69,8 +69,8 @@ vim-image:
 # - optional: tag
 docker-image:
 	vim docker-$(image)/$(tag)/Dockerfile
-	make sync-file image=docker-$(image) file=Dockerfile tag=$(tag)
-	make setbase-dockerfile image=docker-$(image) baseimage=docker-$(baseimage)
+	make sync-file image=$(image) file=Dockerfile tag=$(tag)
+	make setbase-dockerfile image=$(image) baseimage=$(baseimage)
 
 # sync a file from tag directory to all other tags
 #
@@ -79,7 +79,7 @@ docker-image:
 # - optional: tag
 sync-file:
 	for atag in $(alltags) ; do \
-	  cp $(image)/$(tag)/$(file) $(image)/$$atag/$(file)  2>/dev/null || : ; \
+	  cp docker-$(image)/$(tag)/$(file) docker-$(image)/$$atag/$(file)  2>/dev/null || : ; \
 	done
 
 # set the correct base images for all tags
@@ -88,7 +88,7 @@ sync-file:
 # - required: image, baseimage
 setbase-dockerfile:
 	for atag in $(alltags) ; do \
-	  sed -i '1 s%^.*%FROM bethgelab/$(baseimage):'$$atag'%' $(image)/$$atag/Dockerfile ; \
+	  sed -i '1 s%^.*%FROM bethgelab/$(baseimage):'$$atag'%' docker-$(image)/$$atag/Dockerfile ; \
 	done
 
 
