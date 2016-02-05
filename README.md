@@ -2,19 +2,22 @@
 
 This repository includes utilities to build and run the Docker images of the [Bethge Lab](http://bethgelab.org/). The toolchain is composed of four different images (more details below):
 
-* The __xserver__ image adds user-authentication and Xserver capabilities to a base Ubuntu-image. In particular, this images fixes a file permission problem: new files created from within the container are owned by root and thus conflict with user permissions.
+* The [__xserver__](https://github.com/bethgelab/docker-xserver) image adds user-authentication and Xserver capabilities to a base Ubuntu-image. In particular, this images fixes a file permission problem: new files created from within the container are owned by root and thus conflict with user permissions.
 
-* The __jupyter-notebook__ image is a fork of the official [jupyter/notebook image](https://hub.docker.com/r/jupyter/notebook/) but is based on xserver.
+* The [__jupyter-notebook__](https://github.com/bethgelab/docker-jupyter-notebook) image is a fork of the official [jupyter/notebook image](https://hub.docker.com/r/jupyter/notebook/) but is based on xserver.
 
-* The __jupyter-scipyserver__ image is based on jupyter-notebook and adds many python packages needed for scientific computing such as Numpy and Scipy (both compiled against OpenBlas), Theano, Lasagne, Pandas, Seaborn and more.
+* The [__jupyter-scipyserver__](https://github.com/bethgelab/docker-jupyter-scipyserver) image is based on jupyter-notebook and adds many python packages needed for scientific computing such as Numpy and Scipy (both compiled against OpenBlas), Theano, Lasagne, Pandas, Seaborn and more.
 
-* The __jupyter-deeplearning__ image is based on jupyter-scipyserver (including Lasagne) but adds some libraries such as Caffe, Torch, Keras, Scikit-image, Joblib and others. Tensorflow will follow as soon as CuDNN v4 is supported.
+* The [__jupyter-deeplearning__](https://github.com/bethgelab/docker-jupyter-deeplearning) image is based on jupyter-scipyserver (including Lasagne) but adds some libraries such as Caffe, Torch, Keras, Scikit-image, Joblib and others. Tensorflow will follow as soon as CuDNN v4 is supported.
 
-All images come with different (or no) CUDA-libraries installed. Currently we support plain __Ubuntu 14.04__, __Ubuntu 14.04 + Cuda 6.5__ or __Ubuntu 14.04 + Cuda 7.0 + CuDNN v2, v3 or v4__. All images are readily available from [Docker Hub](https://hub.docker.com/u/bethgelab/) and the names are structured according to
+All images come with different (or no) CUDA-libraries installed. Currently we support the following configurations:
+* `ubuntu-14.04`: plain __Ubuntu 14.04__
+* `cuda6.5`: Ubuntu 14.04 + __Cuda 6.5__
+* `cuda7.0-cudnn2`: Ubuntu 14.04 + __Cuda 7.0 + CuDNN v2__
+* `cuda7.0-cudnn3`: Ubuntu 14.04 + __Cuda 7.0 + CuDNN v3__
+* `cuda7.0-cudnn4`: Ubuntu 14.04 + __Cuda 7.0 + CuDNN v4__
 
-    bethgelab/image:tag
-
-so, e.g. to pull the image *jupyter-deeplearning* with Cuda 7.0 and CuDNN v3 you would do
+All images are readily available from [Docker Hub](https://hub.docker.com/u/bethgelab/). To pull for example the image *jupyter-deeplearning* with Cuda 7.0 and CuDNN v3 you would do
 
     docker pull bethgelab/jupyter-deeplearning:cuda7.0-cudnn3
 
@@ -100,5 +103,6 @@ This image is based on jupyter-scipyserver and adds Caffe 0.14 (binaries by NVID
 * keras
 
 # Issues and Contributing
+
 * Please let us know by [filing a new issue](https://github.com/bethgelab/docker/issues/new)
 * You can contribute by opening a [pull request](https://help.github.com/articles/using-pull-requests/)
