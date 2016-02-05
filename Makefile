@@ -37,17 +37,17 @@ clone-all-https:
 
 # update all images (repositories)
 pull-github-all:
-	make git-command command=pull
+	make git-all command=pull
 
 # update all images (repositories)
 status-all:
-	make git-command command=status
+	make git-all command=status
 
 # run a git command in every repository
 #
 # parameter:
 # - required: command
-git-command:
+git-all:
 	cd docker-xserver && git $(command)
 	cd docker-jupyter-notebook && git $(command)
 	cd docker-jupyter-scipyserver && git $(command)
