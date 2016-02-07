@@ -18,6 +18,7 @@ ldapbaseimages=ubuntu:14.04 nvidia/cuda:6.5-devel nvidia/cuda:7.0-cudnn2-devel n
 build-all:
 	docker build -t bethgelab/xserver:$(tag) docker-xserver/$(tag)/
 	docker build -t bethgelab/jupyter-notebook:$(tag) docker-jupyter-notebook/$(tag)/
+	docker build -t bethgelab/jupyter-scipyserver-base:$(tag) docker-jupyter-scipyserver-base/$(tag)/
 	docker build -t bethgelab/jupyter-scipyserver:$(tag) docker-jupyter-scipyserver/$(tag)/
 	docker build -t bethgelab/jupyter-deeplearning:$(tag) docker-jupyter-deeplearning/$(tag)/
 
@@ -25,6 +26,7 @@ build-all:
 clone-all:
 	git clone git@github.com:bethgelab/docker-xserver.git
 	git clone git@github.com:bethgelab/docker-jupyter-notebook.git
+	git clone git@github.com:bethgelab/docker-jupyter-scipyserver-base.git
 	git clone git@github.com:bethgelab/docker-jupyter-scipyserver.git
 	git clone git@github.com:bethgelab/docker-jupyter-deeplearning.git
 
@@ -32,6 +34,7 @@ clone-all:
 clone-all-https:
 	git clone https://github.com/bethgelab/docker-xserver.git
 	git clone https://github.com/bethgelab/docker-jupyter-notebook.git
+	git clone https://github.com/bethgelab/docker-jupyter-scipyserver-base.git
 	git clone https://github.com/bethgelab/docker-jupyter-scipyserver.git
 	git clone https://github.com/bethgelab/docker-jupyter-deeplearning.git
 
@@ -50,6 +53,7 @@ status-all:
 git-all:
 	cd docker-xserver && git $(command)
 	cd docker-jupyter-notebook && git $(command)
+	cd docker-jupyter-scipyserver-base && git $(command)
 	cd docker-jupyter-scipyserver && git $(command)
 	cd docker-jupyter-deeplearning && git $(command)
 
@@ -103,6 +107,8 @@ build-xserver:
 	docker build -t bethgelab/xserver:$(tag) docker-xserver/$(tag)/
 build-notebook:
 	docker build -t bethgelab/jupyter-notebook:$(tag) docker-jupyter-notebook/$(tag)/
+build-scipyserver-base:
+	docker build -t bethgelab/jupyter-scipyserver-base:$(tag) docker-jupyter-scipyserver-base/$(tag)/
 build-scipyserver:
 	docker build -t bethgelab/jupyter-scipyserver:$(tag) docker-jupyter-scipyserver/$(tag)/
 build-deeplearning:
@@ -117,8 +123,10 @@ docker-xserver:
 	echo currently not supported
 docker-notebook:
 	make docker-image image=jupyter-notebook baseimage=xserver tag=$(tag)
+docker-scipyserver-base:
+	make docker-image image=jupyter-scipyserver-base baseimage=jupyter-notebook
 docker-scipyserver:
-	make docker-image image=jupyter-scipyserver baseimage=jupyter-notebook
+	make docker-image image=jupyter-scipyserver baseimage=jupyter-scipyserver-base
 docker-deeplearning:
 	make docker-image image=jupyter-deeplearning baseimage=jupyter-scipyserver
 
@@ -131,6 +139,8 @@ vim-xserver:
 	make vim-image image=xserver file=$(file) tag=$(tag)
 vim-notebook:
 	make vim-image image=jupyter-notebook file=$(file) tag=$(tag)
+vim-scipyserver-base:
+	make vim-image image=jupyter-scipyserver-base file=$(file) tag=$(tag)
 vim-scipyserver:
 	make vim-image image=jupyter-scipyserver file=$(file) tag=$(tag)
 vim-deeplearning:
@@ -145,6 +155,8 @@ interactive-xserver:
 	GPU=$(gpu) ./agmb-docker run -it --rm bethgelab/xserver:$(tag)
 interactive-notebook:
 	GPU=$(gpu) ./agmb-docker run -it --rm bethgelab/jupyter-notebook:$(tag)
+interactive-scipyserver-base:
+	GPU=$(gpu) ./agmb-docker run -it --rm bethgelab/jupyter-scipyserver-base:$(tag)
 interactive-scipyserver:
 	GPU=$(gpu) ./agmb-docker run -it --rm bethgelab/jupyter-scipyserver:$(tag)
 interactive-deeplearning:
@@ -159,6 +171,8 @@ daemon-xserver:
 	GPU=$(gpu) ./agmb-docker run -d bethgelab/xserver:$(tag)
 daemon-notebook:
 	GPU=$(gpu) ./agmb-docker run -d bethgelab/jupyter-notebook:$(tag)
+daemon-scipyserver-base:
+	GPU=$(gpu) ./agmb-docker run -d bethgelab/jupyter-scipyserver-base:$(tag)
 daemon-scipyserver:
 	GPU=$(gpu) ./agmb-docker run -d bethgelab/jupyter-scipyserver:$(tag)
 daemon-deeplearning:

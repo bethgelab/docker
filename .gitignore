@@ -1,5 +1,6 @@
 docker-xserver/
 docker-jupyter-notebook/
+docker-jupyter-scipyserver-base/
 docker-jupyter-scipyserver/
 docker-jupyter-deeplearning/
 
