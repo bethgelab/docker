@@ -102,6 +102,12 @@ This image is based on jupyter-scipyserver and adds **Caffe 0.14** (binaries by 
 * bloscpack
 * keras
 
+## Trouble-Shooting
+
+If you run into an "[[: not found" error upon executing the agmb-docker script, then you are invoking dash and not bash. To invoke bash explicitely, do
+
+    GPU=0 bash agmb-docker run -d bethgelab/jupyter-deeplearning:cuda7.0-cudnn3
+
 # Issues and Contributing
 
 * Please let us know by [filing a new issue](https://github.com/bethgelab/docker/issues/new)
