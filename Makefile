@@ -38,6 +38,16 @@ clone-all-https:
 	git clone https://github.com/bethgelab/docker-jupyter-scipyserver.git
 	git clone https://github.com/bethgelab/docker-jupyter-deeplearning.git
 
+# mostly for debugging: pulls all images for all tags from docker hub
+docker-hub-pull-all:
+	for atag in $(alltags) ; do \
+		docker pull bethgelab/xserver:$$atag ; \
+		docker pull bethgelab/jupyter-notebook:$$atag ; \
+		docker pull bethgelab/jupyter-scipyserver-base:$$atag ; \
+		docker pull bethgelab/jupyter-scipyserver:$$atag ; \
+		docker pull bethgelab/jupyter-deeplearning:$$atag ; \
+	done
+
 # update all images (repositories)
 pull-github-all:
 	make git-all command=pull
