@@ -100,7 +100,11 @@ This image is based on jupyter-scipyserver and adds **Caffe 0.14** (binaries by 
 * networkx
 * joblib
 * bloscpack
-* keras
+*  keras
+
+## jupyter-torch
+
+This image is based on jupyter-deeplearning and adds **Torch** including FBLuaLib and loadcaffe.
 
 ## Trouble-Shooting
 
