@@ -1,11 +1,12 @@
 # default tag that is used if not specified otherwise
-tag=cuda7.0-cudnn3
+tag=cuda7.0-cudnn4
+new_tag=cuda7.5-cudnn4
 gpu=0
 
 
 # only change if new tags are added or existing tags are removed
-alltags=ubuntu-14.04 cuda6.5 cuda7.0-cudnn2 cuda7.0-cudnn3 cuda7.0-cudnn4
-ldapbaseimages=ubuntu:14.04 nvidia/cuda:6.5-devel nvidia/cuda:7.0-cudnn2-devel nvidia/cuda:7.0-cudnn3-devel nvidia/cuda:7.0-cudnn4-devel
+alltags=ubuntu-14.04 cuda6.5 cuda7.0-cudnn2 cuda7.0-cudnn3 cuda7.0-cudnn4 cuda7.5-cudnn4
+ldapbaseimages=ubuntu:14.04 nvidia/cuda:6.5-devel nvidia/cuda:7.0-cudnn2-devel nvidia/cuda:7.0-cudnn3-devel nvidia/cuda:7.0-cudnn4-devel nvidia/cuda:7.5-cudnn4-devel
 
 
 # generic commands that apply to all images
@@ -21,6 +22,7 @@ build-all:
 	docker build -t bethgelab/jupyter-scipyserver-base:$(tag) docker-jupyter-scipyserver-base/$(tag)/
 	docker build -t bethgelab/jupyter-scipyserver:$(tag) docker-jupyter-scipyserver/$(tag)/
 	docker build -t bethgelab/jupyter-deeplearning:$(tag) docker-jupyter-deeplearning/$(tag)/
+	docker build -t bethgelab/jupyter-torch:$(tag) docker-jupyter-torch/$(tag)/
 
 # clone all images (repositories)
 clone-all:
@@ -29,6 +31,7 @@ clone-all:
 	git clone git@github.com:bethgelab/docker-jupyter-scipyserver-base.git
 	git clone git@github.com:bethgelab/docker-jupyter-scipyserver.git
 	git clone git@github.com:bethgelab/docker-jupyter-deeplearning.git
+	git clone git@github.com:bethgelab/docker-jupyter-torch.git
 
 # clone all images (repositories) using https
 clone-all-https:
@@ -37,6 +40,7 @@ clone-all-https:
 	git clone https://github.com/bethgelab/docker-jupyter-scipyserver-base.git
 	git clone https://github.com/bethgelab/docker-jupyter-scipyserver.git
 	git clone https://github.com/bethgelab/docker-jupyter-deeplearning.git
+	git clone https://github.com/bethgelab/docker-jupyter-torch.git
 
 # mostly for debugging: pulls all images for all tags from docker hub
 docker-hub-pull-all:
@@ -46,7 +50,16 @@ docker-hub-pull-all:
 		docker pull bethgelab/jupyter-scipyserver-base:$$atag ; \
 		docker pull bethgelab/jupyter-scipyserver:$$atag ; \
 		docker pull bethgelab/jupyter-deeplearning:$$atag ; \
+		docker pull bethgelab/jupyter-torch:$$atag ; \
 	done
+
+make-tag:
+	cp -r docker-xserver/$(tag) docker-xserver/$(new_tag)
+	cp -r docker-jupyter-notebook/$(tag) docker-jupyter-notebook/$(new_tag)
+	cp -r docker-jupyter-scipyserver-base/$(tag) docker-jupyter-scipyserver-base/$(new_tag)
+	cp -r docker-jupyter-scipyserver/$(tag) docker-jupyter-scipyserver/$(new_tag)
+	cp -r docker-jupyter-deeplearning/$(tag) docker-jupyter-deeplearning/$(new_tag)
+	cp -r docker-jupyter-torch/$(tag) docker-jupyter-torch/$(new_tag)
 
 # update all images (repositories)
 pull-github-all:
@@ -66,6 +79,7 @@ git-all:
 	cd docker-jupyter-scipyserver-base && git $(command)
 	cd docker-jupyter-scipyserver && git $(command)
 	cd docker-jupyter-deeplearning && git $(command)
+	cd docker-jupyter-torch && git $(command)
 
 # opens file in vim and syncs across tags
 #
@@ -123,6 +137,8 @@ build-scipyserver:
 	docker build -t bethgelab/jupyter-scipyserver:$(tag) docker-jupyter-scipyserver/$(tag)/
 build-deeplearning:
 	docker build -t bethgelab/jupyter-deeplearning:$(tag) docker-jupyter-deeplearning/$(tag)/
+build-torch:
+	docker build -t bethgelab/jupyter-torch:$(tag) docker-jupyter-torch/$(tag)/
 
 # opens Dockerfile in vim, syncs across tags and sets correct base image
 #
@@ -139,6 +155,8 @@ docker-scipyserver:
 	make docker-image image=jupyter-scipyserver baseimage=jupyter-scipyserver-base
 docker-deeplearning:
 	make docker-image image=jupyter-deeplearning baseimage=jupyter-scipyserver
+docker-torch:
+	make docker-image image=jupyter-torch baseimage=jupyter-deeplearning
 
 # opens any file (use file=... as argument) in vim and syncs across tags after closing
 #
@@ -155,6 +173,8 @@ vim-scipyserver:
 	make vim-image image=jupyter-scipyserver file=$(file) tag=$(tag)
 vim-deeplearning:
 	make vim-image image=jupyter-deeplearning file=$(file) tag=$(tag)
+vim-torch:
+	make vim-image image=jupyter-torch file=$(file) tag=$(tag)
 
 # run interactive (-it --rm)
 #
@@ -171,6 +191,8 @@ interactive-scipyserver:
 	GPU=$(gpu) ./agmb-docker run -it --rm bethgelab/jupyter-scipyserver:$(tag)
 interactive-deeplearning:
 	GPU=$(gpu) ./agmb-docker run -it --rm bethgelab/jupyter-deeplearning:$(tag)
+interactive-torch:
+	GPU=$(gpu) ./agmb-docker run -it --rm bethgelab/jupyter-torch:$(tag)
 
 # run as daemon (-d)
 #
@@ -187,4 +209,6 @@ daemon-scipyserver:
 	GPU=$(gpu) ./agmb-docker run -d bethgelab/jupyter-scipyserver:$(tag)
 daemon-deeplearning:
 	GPU=$(gpu) ./agmb-docker run -d bethgelab/jupyter-deeplearning:$(tag)
+daemon-torch:
+	GPU=$(gpu) ./agmb-docker run -d bethgelab/jupyter-torch:$(tag)
 
