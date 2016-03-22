@@ -1,6 +1,7 @@
 # default tag that is used if not specified otherwise
 tag=cuda7.0-cudnn4
 new_tag=cuda7.5-cudnn4
+delete_tag=cuda7.0-cudnn2
 gpu=0
 
 
@@ -60,6 +61,14 @@ make-tag:
 	cp -r docker-jupyter-scipyserver/$(tag) docker-jupyter-scipyserver/$(new_tag)
 	cp -r docker-jupyter-deeplearning/$(tag) docker-jupyter-deeplearning/$(new_tag)
 	cp -r docker-jupyter-torch/$(tag) docker-jupyter-torch/$(new_tag)
+
+delete-tag:
+	rm -rf docker-xserver/$(delete_tag)
+	rm -rf docker-jupyter-notebook/$(delete_tag)
+	rm -rf docker-jupyter-scipyserver-base/$(delete_tag)
+	rm -rf docker-jupyter-scipyserver/$(delete_tag)
+	rm -rf docker-jupyter-deeplearning/$(delete_tag)
+	rm -rf docker-jupyter-torch/$(delete_tag)
 
 # update all images (repositories)
 pull-github-all:
