@@ -8,7 +8,9 @@ This repository includes utilities to build and run the Docker images of the [Be
 
 * The [__jupyter-scipyserver__](https://github.com/bethgelab/docker-jupyter-scipyserver) image is based on jupyter-notebook and adds many python packages needed for scientific computing such as Numpy and Scipy (both compiled against OpenBlas), Theano, Lasagne, Pandas, Seaborn and more.
 
-* The [__jupyter-deeplearning__](https://github.com/bethgelab/docker-jupyter-deeplearning) image is based on jupyter-scipyserver (including **Lasagne**) but adds some libraries such as **Caffe**, **Keras**, Scikit-image, Joblib and others. **Tensorflow** will follow as soon as CuDNN v4 is supported.
+* The [__jupyter-deeplearning__](https://github.com/bethgelab/docker-jupyter-deeplearning) image is based on jupyter-scipyserver (including **Lasagne**) but adds some libraries such as **Caffe**, **Keras**, **Tensorflow**, Scikit-image, Joblib and others.
+
+* The [__jupyter-torch__](https://github.com/bethgelab/docker-jupyter-torch) image is based on jupyter-deeplearning and adds Torch including FBLuaLib and loadcaffe.
 
 All images come with different (or no) CUDA-libraries installed. Currently we support the following configurations:
 * `ubuntu-14.04`: plain __Ubuntu 14.04__
