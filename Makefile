@@ -1,13 +1,13 @@
 # default tag that is used if not specified otherwise
 tag=cuda7.0-cudnn4
 new_tag=cuda7.5-cudnn4
-delete_tag=cuda7.0-cudnn2
+delete_tag=cuda6.5
 gpu=0
 
 
 # only change if new tags are added or existing tags are removed
-alltags=ubuntu-14.04 cuda6.5 cuda7.0-cudnn2 cuda7.0-cudnn3 cuda7.0-cudnn4 cuda7.5-cudnn4
-ldapbaseimages=ubuntu:14.04 nvidia/cuda:6.5-devel nvidia/cuda:7.0-cudnn2-devel nvidia/cuda:7.0-cudnn3-devel nvidia/cuda:7.0-cudnn4-devel nvidia/cuda:7.5-cudnn4-devel
+alltags=ubuntu-14.04 cuda7.0-cudnn4 cuda7.5-cudnn4
+ldapbaseimages=ubuntu:14.04 nvidia/cuda:7.0-cudnn4-devel nvidia/cuda:7.5-cudnn4-devel
 
 
 # generic commands that apply to all images
