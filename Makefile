@@ -7,7 +7,7 @@ gpu=0
 
 # only change if new tags are added or existing tags are removed
 alltags=ubuntu-14.04 cuda7.0-cudnn4 cuda7.5-cudnn4
-ldapbaseimages=ubuntu:14.04 nvidia/cuda:7.0-cudnn4-devel nvidia/cuda:7.5-cudnn4-devel
+xserverbaseimages=ubuntu:14.04 nvidia/cuda:7.0-cudnn4-devel nvidia/cuda:7.5-cudnn4-devel
 
 
 # generic commands that apply to all images
@@ -155,7 +155,8 @@ build-torch:
 # - optional: tag
 .PHONY: docker-xserver
 docker-xserver:
-	echo currently not supported
+	make vim-image image=xserver file=Dockerfile tag=$(tag)
+	python utils/set_xserver_baseimage.py '$(alltags)' '$(xserverbaseimages)'
 docker-notebook:
 	make docker-image image=jupyter-notebook baseimage=xserver tag=$(tag)
 docker-scipyserver-base:
