@@ -38,6 +38,7 @@ or equivalently for any other image or tag. This command has to be run in the fo
 Note that all the usual docker flags can be given. In addition, some environmental variables have a special meaning
 
 * ```USER```  --  The username that is added to the container
+* ```USER_HOME```  --  The user's home directory location (default ```/gpfs01/bethge/home/$USER_NAME```)
 * ```USER_ID```  --  The user ID for the new user
 * ```USER_GROUPS```  --  The groups to which the user is added (default: sudo,bethgelab:1011,cin:1019); the first group will act as the primary group
 * ```USER_ENCRYPTED_PASSWORD```  --  your user password (encrypted). To generate it: ```perl -e 'print crypt('"PASSWORD"', "aa"),"\n"' ```
