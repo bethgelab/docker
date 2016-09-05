@@ -1,0 +1,15 @@
+#!/bin/bash
+
+docker ps | while read -r line ; do
+    id=`echo $line | cut -d " " -f1`
+    if [ "$id" != "CONTAINER" ]
+    then
+        info=`docker exec $id bash -c 'printf "%-12s %-2s" "$USER" "$GPU"'`
+        echo "$info   $line"
+    else
+        echo ""
+        echo "USER         GPU  $line"
+    fi
+done
+echo ""
+
