@@ -54,6 +54,62 @@ docker-hub-pull-all:
 		docker pull bethgelab/jupyter-torch:$$atag ; \
 	done
 
+docker-hub-push-all:
+	make build-xserver-nocache
+	docker tag bethgelab/xserver:$(tag) bethgelab/xserver-x:$(tag)
+	docker push bethgelab/xserver-x:$(tag)
+	make build-notebook-nocache
+	docker tag bethgelab/jupyter-notebook:$(tag) bethgelab/jupyter-notebook-x:$(tag)
+	docker push bethgelab/jupyter-notebook-x:$(tag)
+	make build-scipyserver-base-nocache
+	docker tag bethgelab/jupyter-scipyserver-base:$(tag) bethgelab/jupyter-scipyserver-base-x:$(tag)
+	docker push bethgelab/jupyter-scipyserver-base-x:$(tag)
+	make build-scipyserver-nocache
+	docker tag bethgelab/jupyter-scipyserver:$(tag) bethgelab/jupyter-scipyserver-x:$(tag)
+	docker push bethgelab/jupyter-scipyserver-x:$(tag)
+	make build-deeplearning-nocache
+	docker tag bethgelab/jupyter-deeplearning:$(tag) bethgelab/jupyter-deeplearning-x:$(tag)
+	docker push bethgelab/jupyter-deeplearning-x:$(tag)
+	make build-torch-nocache
+	docker tag bethgelab/jupyter-torch:$(tag) bethgelab/jupyter-torch-x:$(tag)
+	docker push bethgelab/jupyter-torch-x:$(tag)
+
+docker-hub-push-xserver:
+	make build-xserver-nocache
+	docker tag bethgelab/xserver:$(tag) bethgelab/xserver-x:$(tag)
+	docker push bethgelab/xserver-x:$(tag)
+
+docker-hub-push-notebook:
+	make build-notebook-nocache
+	docker tag bethgelab/jupyter-notebook:$(tag) bethgelab/jupyter-notebook-x:$(tag)
+	docker push bethgelab/jupyter-notebook-x:$(tag)
+
+docker-hub-push-scipyserver-base:
+	make build-scipyserver-base-nocache
+	docker tag bethgelab/jupyter-scipyserver-base:$(tag) bethgelab/jupyter-scipyserver-base-x:$(tag)
+	docker push bethgelab/jupyter-scipyserver-base-x:$(tag)
+	
+docker-hub-push-scipyserver:
+	make build-scipyserver-nocache
+	docker tag bethgelab/jupyter-scipyserver:$(tag) bethgelab/jupyter-scipyserver-x:$(tag)
+	docker push bethgelab/jupyter-scipyserver-x:$(tag)
+
+docker-hub-push-deeplearning:
+	make build-deeplearning-nocache
+	docker tag bethgelab/jupyter-deeplearning:$(tag) bethgelab/jupyter-deeplearning-x:$(tag)
+	docker push bethgelab/jupyter-deeplearning-x:$(tag)
+
+docker-hub-push-torch:
+	make build-torch-nocache
+	docker tag bethgelab/jupyter-torch:$(tag) bethgelab/jupyter-torch-x:$(tag)
+	docker push bethgelab/jupyter-torch-x:$(tag)
+
+docker-push-service:
+	while [ 1 ]; do \
+	  make docker-hub-push-all; \
+	  sleep 600000; \
+	done;
+
 make-tag:
 	cp -r docker-xserver/$(tag) docker-xserver/$(new_tag)
 	cp -r docker-jupyter-notebook/$(tag) docker-jupyter-notebook/$(new_tag)
@@ -148,6 +204,23 @@ build-deeplearning:
 	docker build -t bethgelab/jupyter-deeplearning:$(tag) docker-jupyter-deeplearning/$(tag)/
 build-torch:
 	docker build -t bethgelab/jupyter-torch:$(tag) docker-jupyter-torch/$(tag)/
+
+# build indiviual images
+#
+# parameters:
+# - optional: tag
+build-xserver-nocache:
+	docker build -t bethgelab/xserver:$(tag) --no-cache=true docker-xserver/$(tag)/
+build-notebook-nocache:
+	docker build -t bethgelab/jupyter-notebook:$(tag) --no-cache=true docker-jupyter-notebook/$(tag)/
+build-scipyserver-base-nocache:
+	docker build -t bethgelab/jupyter-scipyserver-base:$(tag) --no-cache=true docker-jupyter-scipyserver-base/$(tag)/
+build-scipyserver-nocache:
+	docker build -t bethgelab/jupyter-scipyserver:$(tag) --no-cache=true docker-jupyter-scipyserver/$(tag)/
+build-deeplearning-nocache:
+	docker build -t bethgelab/jupyter-deeplearning:$(tag) --no-cache=true docker-jupyter-deeplearning/$(tag)/
+build-torch-nocache:
+	docker build -t bethgelab/jupyter-torch:$(tag) --no-cache=true docker-jupyter-torch/$(tag)/
 
 # opens Dockerfile in vim, syncs across tags and sets correct base image
 #
