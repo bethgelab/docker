@@ -103,7 +103,8 @@ This image is based on jupyter-scipyserver and adds **Caffe 0.14** (binaries by 
 * networkx
 * joblib
 * bloscpack
-*  keras
+* keras
+* **TensorFlow**
 
 ## jupyter-torch
 
