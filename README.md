@@ -18,22 +18,24 @@ All images come with different (or no) CUDA-libraries installed. Currently we su
 * `cuda7.0-cudnn2`: Ubuntu 14.04 + __Cuda 7.0 + CuDNN v2__
 * `cuda7.0-cudnn3`: Ubuntu 14.04 + __Cuda 7.0 + CuDNN v3__
 * `cuda7.0-cudnn4`: Ubuntu 14.04 + __Cuda 7.0 + CuDNN v4__
+* `cuda7.5-cudnn5`: Ubuntu 14.04 + __Cuda 7.5 + CuDNN v5__
+* `cuda8.0-cudnn5`: Ubuntu 14.04 + __Cuda 8.0 + CuDNN v5__
 
-All images are readily available from [Docker Hub](https://hub.docker.com/u/bethgelab/). To pull for example the image *jupyter-deeplearning* with Cuda 7.0 and CuDNN v3 you would do
+All images are readily available from [Docker Hub](https://hub.docker.com/u/bethgelab/). To pull for example the image *jupyter-deeplearning* with Cuda 8.0 and CuDNN v5 you would do
 
-    docker pull bethgelab/jupyter-deeplearning:cuda7.0-cudnn3
+    docker pull bethgelab/jupyter-deeplearning-x:cuda8.0-cudnn5
 
-Available tags are *ubuntu-14.04*, *cuda6.5*, *cuda7.0-cudnn2*, *cuda7.0-cudnn3* and *cuda7.0-cudnn4*.
+Available tags are *ubuntu-14.04*, *cuda6.5*, *cuda7.0-cudnn2*, *cuda7.0-cudnn3*, *cuda7.0-cudnn4*, *cuda7.5-cudnn5*, *cuda8.0-cudnn5*.
 
 ### AGMB Docker wrapper
 
-To make the employment of the containers as painless as possible we have wrapped all important flags in the script ```agmb-docker``` (see root directory of repo), which is a modification of the ```nvidia-docker``` wrapper from the [nvidia-docker repository](https://github.com/NVIDIA/nvidia-docker). To run a container, first pull the image from Docker Hub (important - otherwise the CUDA version cannot be detected) before running the command
+To make the employment of the containers as painless as possible we have wrapped all important flags in the script ```nv-agmb-docker``` (see root directory of repo), which wraps ```nvidia-docker``` (https://github.com/NVIDIA/nvidia-docker). To run a container, first pull the image from Docker Hub (important - otherwise the CUDA version cannot be detected) before running the command
 
-    GPU=0 ./agmb-docker run -d bethgelab/jupyter-deeplearning:cuda7.0-cudnn3
+    GPU=0 ./nv-agmb-docker run -d bethgelab/jupyter-deeplearning-x:cuda8.0-cudnn5
 
 or equivalently for any other image or tag. This command has to be run in the folder in which the agmb-docker script was placed. The script takes care of setting up the NVIDIA host driver environment inside the Docker container, adds the current user, mounts his home-directory in which it finally starts the jupyter notebook. Some properties are specific to users within the AG Bethge lab, but as an external user one can override all settings. As the most stripped-down version, use
 
-    GPU=0 ./agmb-docker run -e GROUPS=sudo -e USER_HOME=$HOME -d bethgelab/jupyter-deeplearning:cuda7.0-cudnn3
+    GPU=0 ./nv-agmb-docker run -e GROUPS=sudo -e USER_HOME=$HOME -d bethgelab/jupyter-deeplearning-x:cuda8.0-cudnn5
 
 Note that all the usual docker flags can be given. In addition, some environmental variables have a special meaning
 
@@ -45,6 +47,10 @@ Note that all the usual docker flags can be given. In addition, some environment
 
 GPUs are exported through a list of comma-separated IDs using the environment variable ```GPU```.
 The numbering is the same as reported by ```nvidia-smi``` or when running CUDA code with ```CUDA_DEVICE_ORDER=PCI_BUS_ID```, it is however **different** from the default CUDA ordering.
+
+#### Note
+
+The above applies to the tags from CUDA 8.0 onwards. For older images (i.e. CUDA 7.5 and before) replace `nv-agmb-docker` by `agmb-docker`.
 
 ## xserver: LDAP, Xserver & OpenBLAS
 
