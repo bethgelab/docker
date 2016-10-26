@@ -27,13 +27,13 @@ Available tags are *ubuntu-14.04*, *cuda6.5*, *cuda7.0-cudnn2*, *cuda7.0-cudnn3*
 
 ### AGMB Docker wrapper
 
-To make the employment of the containers as painless as possible we have wrapped all important flags in the script ```agmb-docker``` (see root directory of repo), which is a modification of the ```nvidia-docker``` wrapper from the [nvidia-docker repository](https://github.com/NVIDIA/nvidia-docker). To run a container, first pull the image from Docker Hub (important - otherwise the CUDA version cannot be detected) before running the command
+To make the employment of the containers as painless as possible we have wrapped all important flags in the script ```nv-agmb-docker``` (see root directory of repo), which wraps ```nvidia-docker``` (https://github.com/NVIDIA/nvidia-docker). To run a container, first pull the image from Docker Hub (important - otherwise the CUDA version cannot be detected) before running the command
 
-    GPU=0 ./agmb-docker run -d bethgelab/jupyter-deeplearning:cuda7.0-cudnn3
+    GPU=0 ./nv-agmb-docker run -d bethgelab/jupyter-deeplearning-x:cuda8.0-cudnn5
 
 or equivalently for any other image or tag. This command has to be run in the folder in which the agmb-docker script was placed. The script takes care of setting up the NVIDIA host driver environment inside the Docker container, adds the current user, mounts his home-directory in which it finally starts the jupyter notebook. Some properties are specific to users within the AG Bethge lab, but as an external user one can override all settings. As the most stripped-down version, use
 
-    GPU=0 ./agmb-docker run -e GROUPS=sudo -e USER_HOME=$HOME -d bethgelab/jupyter-deeplearning:cuda7.0-cudnn3
+    GPU=0 ./nv-agmb-docker run -e GROUPS=sudo -e USER_HOME=$HOME -d bethgelab/jupyter-deeplearning-x:cuda8.0-cudnn5
 
 Note that all the usual docker flags can be given. In addition, some environmental variables have a special meaning
 
