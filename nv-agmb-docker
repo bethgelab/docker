@@ -179,4 +179,4 @@ echo " "
 echo "COMMAND: NV_GPU=$GPU" $DOCKER $CMD $NV_DOCKER_ARGS $(echo \$$USER_ARGS | cut -d " " -f2-)
 echo " "
 
-NV_GPU=$GPU $DOCKER $CMD $NV_DOCKER_ARGS $USER_ARGS
+NV_GPU=$GPU $DOCKER $CMD $NV_DOCKER_ARGS $(echo \$$USER_ARGS | cut -d " " -f2-)
