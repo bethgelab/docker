@@ -1,3 +1,5 @@
+nohup*
+gpu_monitor/logs/*
 docker-xserver/
 docker-jupyter-notebook/
 docker-jupyter-scipyserver-base/
