@@ -9,6 +9,7 @@ to log the load. Ideally run this script in a Docker
 container that has access to all GPUs.
 """
 import shutil, socket, subprocess, sys, time, os
+os.environ['CUDA_VISIBLE_DEVICES'] = ''
 import tensorflow as tf
 
 def log_gpu(logdir, name, interval):
