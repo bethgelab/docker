@@ -1,0 +1,109 @@
+#!/usr/bin/env python
+import os
+import socket
+import argparse
+import random
+from subprocess import call
+import crypt
+import fcntl
+import struct
+
+# set requested GPUs
+try:
+    os.environ['NV_GPU'] = os.environ['GPU']
+    GPU = os.environ['GPU']
+except KeyError:
+    GPU = ''
+
+# find IP address of network interface
+def get_ip_address(ifname):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    return socket.inet_ntoa(fcntl.ioctl(
+        s.fileno(),
+        0x8915,  # SIOCGIFADDR
+        struct.pack('256s', ifname[:15])
+    )[20:24])
+
+# find an open port for SSH connections
+def get_open_port():
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.bind(('', 0))
+    port = s.getsockname()[1]
+    s.close()
+    return port
+
+# parse custom arguments
+parser = argparse.ArgumentParser()
+
+parser.add_argument('-u', '--user', metavar='USER_NAME', type=str,
+                    default=os.environ['USER'],
+					help='Specify an alternate user name (default: $USER)')
+
+parser.add_argument('--uid', metavar='USER_ID', type=int,
+                    default=os.getuid(),
+					help='Specify an alternative user ID (default: $UID)')
+
+parser.add_argument('--usergroups', metavar='USER_GROUPS', type=str,
+                    default='bethgelab:1019,cin:1011,sudo',
+					help='Specify user groups (default: bethgelab:1019,cin:1011,sudo)')
+
+parser.add_argument('--userhome', metavar='USER_HOME', type=str,
+                    default='/gpfs01/bethge/home/' + os.environ['USER'],
+					help='Specify an alternative home directory (default: /gpfs01/bethge/home/$USER_NAME)')
+
+parser.add_argument('--pw', metavar='SUDO_PASSWORD', type=str,
+                    default='pw',
+					help='Specify a password for sudo rights (default: pw)')
+
+parser.add_argument('--sshport', metavar='SSH_PORT', type=int,
+                    default=get_open_port(),
+					help='Specify an SSH port (default: randomly chosen in port range)')
+
+parser.add_argument('--jupyterport', metavar='JUPYTER_PORT', type=int,
+                    default=random.randint(600,800),
+					help='Specify a jupyter port (default: randomly chosen in port range [600, 800])')
+
+parser.add_argument('--name', metavar='CONTAINER_NAME', type=str,
+                    default='gpu' + os.environ['GPU'].translate(None, ',') + '_' + os.environ['USER'],
+					help='Name of container (default: gpu$GPU_$USER')
+
+(args, extras) = parser.parse_known_args()
+
+# encrypt password
+args.pw = crypt.crypt(args.pw, 'aa')
+
+# put together the nvidia-docker command
+command = ['nvidia-docker',                            # the environmental variable NV_GPU is set and does not need to be called here 
+           extras[0],                                  # docker command
+           '-p', str(args.sshport) + ':22',            # set SSH port
+           '-p', str(args.jupyterport) + ':8888',      # set JUPYTER port
+		   '-e', 'USER_GROUPS=' + args.usergroups,     # set user-group
+		   '-e', 'USER=' + args.user,                  # set user-name
+		   '-e', 'USER_ID=' + str(args.uid),           # set user-ID
+		   '-e', 'USER_HOME=' + args.userhome,         # set home directory
+		   '-e', 'USER_ENCRYPTED_PASSWORD=' + args.pw, # set home directory
+		   '-e', 'GPU=' + GPU,                         # set GPU
+		   '-v', '/gpfs01/bethge:/gpfs01/bethge',      # mount bethge directory
+		   '--name', args.name                         # set container name
+		   ] + extras[1:]
+
+# get IP address
+try:
+    ip = get_ip_address('eno1')
+except:
+    ip = 'unknown'
+
+# print directions
+print("Setting Notebook port binding to: %i (to set manually add --jupyterport %i as flag)" % (args.jupyterport, args.jupyterport))
+print("")
+print("You can now open the notebook on the host machine by directing your browser to")
+print("")
+print("    http://localhost:%i" % args.jupyterport)
+print("")
+print("or, from a remote system, to")
+print("")
+print("    http://%s:%i" % (ip, args.jupyterport))
+print("")
+print("In the latter case make sure that your local machine can see the server! Otherwise you might have to configure an SSH tunnel first.")
+
+call(command)
