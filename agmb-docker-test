@@ -63,8 +63,9 @@ parser.add_argument('--jupyterport', metavar='JUPYTER_PORT', type=int,
                     default=random.randint(600,800),
 					help='Specify a jupyter port (default: randomly chosen in port range [600, 800])')
 
+gpu_name = 'gpu' + GPU.translate(None, ',') if GPU is not None else 'noGPU'
 parser.add_argument('--name', metavar='CONTAINER_NAME', type=str,
-                    default='gpu' + os.environ['GPU'].translate(None, ',') + '_' + os.environ['USER'],
+                    default=gpu_name + '_' + os.environ['USER'],
 					help='Name of container (default: gpu$GPU_$USER')
 
 (args, extras) = parser.parse_known_args()
