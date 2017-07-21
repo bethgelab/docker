@@ -19,11 +19,11 @@ start-board:
 remove-logs:	
 	docker build -t bethgelab/gpu_monitor_headnode docker/
 	../agmb-docker-test run --name remove_logs -d bethgelab/gpu_monitor_headnode
-	docker exec remove_logs /bin/sh -c "rm -r $(shell pwd)/logs/*"
+	-docker exec remove_logs /bin/sh -c "rm -r $(shell pwd)/logs/*"
 	docker rm -f remove_logs
 
 remove-board:
-	docker rm -f gpu_monitor_headnode
+	-docker rm -f gpu_monitor_headnode
   
 restart-board:
 	make remove-board
@@ -45,7 +45,7 @@ start-minion:
 # parameters:
 # - required: node
 remove-minion:
-	ssh wbrendel@$(node) "docker rm -f gpu_minion"
+	ssh cmichaelis@$(node) "docker rm -f gpu_minion"
 
 # Starts all minions
 #
@@ -63,15 +63,15 @@ start-all-minions:
 # Remove all minions
 #
 remove-all-minions:
-	make remove-minion node=cluster-gpu9 &
-	make remove-minion node=cluster-gpu8 &
-	make remove-minion node=cluster-gpu7 &
-	make remove-minion node=cluster-gpu6 &
-	make remove-minion node=cluster-gpu5 &
-	make remove-minion node=cluster-gpu4 &
-	make remove-minion node=sys1 &
-	make remove-minion node=sys2 &
-	make remove-minion node=sys3 &
+	-make remove-minion node=cluster-gpu9 &
+	-make remove-minion node=cluster-gpu8 &
+	-make remove-minion node=cluster-gpu7 &
+	-make remove-minion node=cluster-gpu6 &
+	-make remove-minion node=cluster-gpu5 &
+	-make remove-minion node=cluster-gpu4 &
+	-make remove-minion node=sys1 &
+	-make remove-minion node=sys2 &
+	-make remove-minion node=sys3 &
 
 # Start individual minions
 start-minion-9:
