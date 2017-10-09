@@ -45,17 +45,22 @@ start-minion:
 # parameters:
 # - required: node
 remove-minion:
-	ssh cmichaelis@$(node) "docker rm -f gpu_minion"
+	ssh $(node) "docker rm -f gpu_minion"
 
 # Starts all minions
 #
 start-all-minions:
-	make start-minion node=cluster-gpu9 gpus=0,1,2,3
-	make start-minion node=cluster-gpu8 gpus=0,1,2,3
-	make start-minion node=cluster-gpu7 gpus=0,1
-	make start-minion node=cluster-gpu6 gpus=0,1
-	make start-minion node=cluster-gpu5 gpus=0,1
-	make start-minion node=cluster-gpu4 gpus=0,1
+	make start-minion node=gpu18 gpus=0,1
+	make start-minion node=gpu17 gpus=0,1
+	make start-minion node=gpu16 gpus=0,1
+	make start-minion node=gpu15 gpus=0,1
+	make start-minion node=gpu14 gpus=0,1
+	make start-minion node=gpu9 gpus=0,1,2,3
+	make start-minion node=gpu8 gpus=0,1,2,3
+	make start-minion node=gpu7 gpus=0,1
+	make start-minion node=gpu6 gpus=0,1
+	make start-minion node=gpu5 gpus=0,1
+	make start-minion node=gpu4 gpus=0,1
 	make start-minion node=sys1 gpus=0,1,2,3
 	make start-minion node=sys2 gpus=0,1,2,3
 	make start-minion node=sys3 gpus=0,1,2,3
@@ -63,34 +68,54 @@ start-all-minions:
 # Remove all minions
 #
 remove-all-minions:
-	-make remove-minion node=cluster-gpu9 &
-	-make remove-minion node=cluster-gpu8 &
-	-make remove-minion node=cluster-gpu7 &
-	-make remove-minion node=cluster-gpu6 &
-	-make remove-minion node=cluster-gpu5 &
-	-make remove-minion node=cluster-gpu4 &
+	-make remove-minion node=gpu18 &
+	-make remove-minion node=gpu17 &
+	-make remove-minion node=gpu16 &
+	-make remove-minion node=gpu15 &
+	-make remove-minion node=gpu14 &
+	-make remove-minion node=gpu9 &
+	-make remove-minion node=gpu8 &
+	-make remove-minion node=gpu7 &
+	-make remove-minion node=gpu6 &
+	-make remove-minion node=gpu5 &
+	-make remove-minion node=gpu4 &
 	-make remove-minion node=sys1 &
 	-make remove-minion node=sys2 &
 	-make remove-minion node=sys3 &
 
 # Start individual minions
+start-minion-18:
+	make start-minion node=gpu18 gpus=0,1
+
+start-minion-17:
+	make start-minion node=gpu17 gpus=0,1
+
+start-minion-16:
+	make start-minion node=gpu16 gpus=0,1
+
+start-minion-15:
+	make start-minion node=gpu15 gpus=0,1
+
+start-minion-14:
+	make start-minion node=gpu14 gpus=0,1
+
 start-minion-9:
-	make start-minion node=cluster-gpu9 gpus=0,1,2,3
+	make start-minion node=gpu9 gpus=0,1,2,3
 
 start-minion-8:
-	make start-minion node=cluster-gpu8 gpus=0,1,2,3
+	make start-minion node=gpu8 gpus=0,1,2,3
 
 start-minion-7:
-	make start-minion node=cluster-gpu7 gpus=0,1
+	make start-minion node=gpu7 gpus=0,1
 
 start-minion-6:
-	make start-minion node=cluster-gpu6 gpus=0,1
+	make start-minion node=gpu6 gpus=0,1
 
 start-minion-5:
-	make start-minion node=cluster-gpu5 gpus=0,1
+	make start-minion node=gpu5 gpus=0,1
 
 start-minion-4:
-	make start-minion node=cluster-gpu4 gpus=0,1
+	make start-minion node=gpu4 gpus=0,1
 
 start-minion-sys1:
 	make start-minion node=sys1 gpus=0,1,2,3
@@ -101,23 +126,38 @@ start-minion-sys2:
 start-minion-sys3:
 	make start-minion node=sys3 gpus=0,1,2,3
 
+remove-minion-18:
+	make remove-minion node=gpu18
+
+remove-minion-17:
+	make remove-minion node=gpu17
+
+remove-minion-16:
+	make remove-minion node=gpu16
+
+remove-minion-15:
+	make remove-minion node=gpu15
+
+remove-minion-14:
+	make remove-minion node=gpu14
+
 remove-minion-9:
-	make remove-minion node=cluster-gpu9
+	make remove-minion node=gpu9
 
 remove-minion-8:
-	make remove-minion node=cluster-gpu8
+	make remove-minion node=gpu8
 
 remove-minion-7:
-	make remove-minion node=cluster-gpu7
+	make remove-minion node=gpu7
 
 remove-minion-6:
-	make remove-minion node=cluster-gpu6
+	make remove-minion node=gpu6
 
 remove-minion-5:
-	make remove-minion node=cluster-gpu5
+	make remove-minion node=gpu5
 
 remove-minion-4:
-	make remove-minion node=cluster-gpu4
+	make remove-minion node=gpu4
 
 remove-minion-sys1:
 	make remove-minion node=sys1
