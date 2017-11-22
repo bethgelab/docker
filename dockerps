@@ -4,12 +4,21 @@ docker ps | while read -r line ; do
     id=`echo $line | cut -d " " -f1`
     if [ "$id" != "CONTAINER" ]
     then
-        info=`docker exec $id sh -c 'printf "%-12s %-2s" "$USER" "$GPU"'`
+	if `docker exec $id sh -c '[ -z ${OWNER} ]'`
+	then
+	    if `docker exec $id sh -c '[ -z ${USER} ]'`
+	    then
+		info=`docker exec $id sh -c 'printf "%-12s %-3s" "unknown" "$GPU"'`
+	    else
+		info=`docker exec $id sh -c 'printf "%-12s %-3s" "$USER" "$GPU"'`
+	    fi
+	else
+	    info=`docker exec $id sh -c 'printf "%-12s %-3s" "$OWNER" "$GPU"'`
+	fi
         echo "$info   $line"
     else
         echo ""
-        echo "USER         GPU  $line"
+        echo "USER         GPU   $line"
     fi
 done
 echo ""
-
