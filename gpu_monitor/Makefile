@@ -12,18 +12,20 @@ start:
 
 # Starts tensorboard to visualise GPU usage since 2am every day
 start-board:
-	docker build -t bethgelab/gpu_monitor_headnode docker/
-	../agmb-docker-test run -p 7000:6006 -p 700:8888 --name gpu_monitor_headnode -d bethgelab/gpu_monitor_headnode
-	docker exec gpu_monitor_headnode /bin/sh -c "nohup python3 $(shell pwd)/tensorboard_monitor.py --log=$(shell pwd)/logs/ > /dev/null 2>&1 &"
+	ssh gpu9 "source /etc/profile && cd $(shell pwd) && \
+	docker build -t bethgelab/gpu_monitor_headnode docker/ && \
+	../agmb-docker-test run -p 7000:6006 -p 700:8888 --name gpu_monitor_headnode -d bethgelab/gpu_monitor_headnode && \
+	docker exec gpu_monitor_headnode /bin/sh -c 'nohup python3 $(shell pwd)/tensorboard_monitor.py --log=$(shell pwd)/logs/ > /dev/null 2>&1 &'"
 
 remove-logs:	
-	docker build -t bethgelab/gpu_monitor_headnode docker/
-	../agmb-docker-test run --name remove_logs -d bethgelab/gpu_monitor_headnode
-	-docker exec remove_logs /bin/sh -c "rm -r $(shell pwd)/logs/*"
-	docker rm -f remove_logs
+	-ssh gpu9 "source /etc/profile && cd $(shell pwd) && \
+	docker build -t bethgelab/gpu_monitor_headnode docker/ && \
+	../agmb-docker-test run --name remove_logs -d bethgelab/gpu_monitor_headnode && \
+	docker exec remove_logs /bin/sh -c 'rm -r $(shell pwd)/logs/*'"
+	-ssh gpu9 "docker rm -f remove_logs"
 
 remove-board:
-	-docker rm -f gpu_monitor_headnode
+	- ssh gpu9 "docker rm -f gpu_monitor_headnode"
   
 restart-board:
 	make remove-board
@@ -50,6 +52,7 @@ remove-minion:
 # Starts all minions
 #
 start-all-minions:
+	make start-minion node=fbgpu1 gpus=0,1,2,3,4,5,6,7
 	make start-minion node=gpu18 gpus=0,1
 	make start-minion node=gpu17 gpus=0,1
 	make start-minion node=gpu16 gpus=0,1
@@ -68,6 +71,7 @@ start-all-minions:
 # Remove all minions
 #
 remove-all-minions:
+	-make remove-minion node=fbgpu1 &
 	-make remove-minion node=gpu18 &
 	-make remove-minion node=gpu17 &
 	-make remove-minion node=gpu16 &
@@ -84,6 +88,9 @@ remove-all-minions:
 	-make remove-minion node=sys3 &
 
 # Start individual minions
+start-minion-fb1:
+	make start-minion node=fbgpu1 gpus=0,1,2,3,4,5,6,7
+
 start-minion-18:
 	make start-minion node=gpu18 gpus=0,1
 
@@ -125,6 +132,9 @@ start-minion-sys2:
 
 start-minion-sys3:
 	make start-minion node=sys3 gpus=0,1,2,3
+
+remove-minion-fb1:
+	make remove-minion node=fbgpu1
 
 remove-minion-18:
 	make remove-minion node=gpu18
