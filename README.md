@@ -1,3 +1,7 @@
+# Outdated
+
+THIS REPOSITORY AND THE DOCKER IMAGES LISTED HERE ARE **OUTDATED**. OUR NEW DEEPLEARNING DOCKER IMAGES AND SCRIPTS CAN BE FOUND AT https://github.com/bethgelab/docker-deeplearning.
+
 # Docker Toolchain of the Bethge Lab
 
 This repository includes utilities to build and run the Docker images of the [Bethge Lab](http://bethgelab.org/). The toolchain is composed of four different images (more details below):
