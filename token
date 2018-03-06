@@ -1,0 +1,4 @@
+#!/bin/bash
+
+docker logs $1 &> /tmp/token && cat /tmp/token | grep ?token=
+
