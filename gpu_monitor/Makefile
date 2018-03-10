@@ -53,6 +53,7 @@ remove-minion:
 #
 start-all-minions:
 	make start-minion node=fbgpu1 gpus=0,1,2,3,4,5,6,7
+	make start-minion node=gpu19 gpus=0,1
 	make start-minion node=gpu18 gpus=0,1
 	make start-minion node=gpu17 gpus=0,1
 	make start-minion node=gpu16 gpus=0,1
@@ -72,6 +73,7 @@ start-all-minions:
 #
 remove-all-minions:
 	-make remove-minion node=fbgpu1 &
+	-make remove-minion node=gpu19 &
 	-make remove-minion node=gpu18 &
 	-make remove-minion node=gpu17 &
 	-make remove-minion node=gpu16 &
@@ -90,6 +92,9 @@ remove-all-minions:
 # Start individual minions
 start-minion-fb1:
 	make start-minion node=fbgpu1 gpus=0,1,2,3,4,5,6,7
+
+start-minion-19:
+	make start-minion node=gpu19 gpus=0,1
 
 start-minion-18:
 	make start-minion node=gpu18 gpus=0,1
@@ -135,6 +140,9 @@ start-minion-sys3:
 
 remove-minion-fb1:
 	make remove-minion node=fbgpu1
+
+remove-minion-19:
+	make remove-minion node=gpu19
 
 remove-minion-18:
 	make remove-minion node=gpu18
